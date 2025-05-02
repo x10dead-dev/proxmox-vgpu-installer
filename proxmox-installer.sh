@@ -837,15 +837,19 @@ case $STEP in
             echo ""
             echo "1: 17.0 (550.54.10)"
             echo "2: 16.4 (535.161.05)"
-            echo "3: 16.2 (535.129.03)"
-            echo "4: 16.1 (535.104.06)"
-            echo "5: 16.0 (535.54.06)"
+            echo "3: 17.0 (550.54.10)"
+            echo "4: 16.4 (535.161.05)"
+            echo "5: 16.2 (535.129.03)"
+            echo "6: 16.1 (535.104.06)"
+            echo "7: 16.0 (535.54.06)"
             echo ""
 
             read -p "Enter your choice: " driver_choice
 
             # Validate the chosen filename against the compatibility map
             case $driver_choice in
+                4) driver_filename="NVIDIA-Linux-x86_64-570.133.10-vgpu-kvm-custom.run" ;;
+                5) driver_filename="NVIDIA-Linux-x86_64-550.163.10-vgpu-kvm-patched.run" ;;
                 1) driver_filename="NVIDIA-Linux-x86_64-550.54.10-vgpu-kvm.run" ;;
                 2) driver_filename="NVIDIA-Linux-x86_64-535.161.05-vgpu-kvm.run" ;;
                 3) driver_filename="NVIDIA-Linux-x86_64-535.129.03-vgpu-kvm.run" ;;
