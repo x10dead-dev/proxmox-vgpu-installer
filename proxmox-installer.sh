@@ -835,8 +835,8 @@ case $STEP in
             echo ""
             echo "Select vGPU driver version:"
             echo ""
-            echo "1: 17.0 (550.54.10)"
-            echo "2: 16.4 (535.161.05)"
+            echo "1: 18.1 (570.133.10)"
+            echo "2: 17.6 (550.163.10)"
             echo "3: 17.0 (550.54.10)"
             echo "4: 16.4 (535.161.05)"
             echo "5: 16.2 (535.129.03)"
@@ -848,13 +848,13 @@ case $STEP in
 
             # Validate the chosen filename against the compatibility map
             case $driver_choice in
-                4) driver_filename="NVIDIA-Linux-x86_64-570.133.10-vgpu-kvm-custom.run" ;;
-                5) driver_filename="NVIDIA-Linux-x86_64-550.163.10-vgpu-kvm-patched.run" ;;
-                1) driver_filename="NVIDIA-Linux-x86_64-550.54.10-vgpu-kvm.run" ;;
-                2) driver_filename="NVIDIA-Linux-x86_64-535.161.05-vgpu-kvm.run" ;;
-                3) driver_filename="NVIDIA-Linux-x86_64-535.129.03-vgpu-kvm.run" ;;
-                4) driver_filename="NVIDIA-Linux-x86_64-535.104.06-vgpu-kvm.run" ;;
-                5) driver_filename="NVIDIA-Linux-x86_64-535.54.06-vgpu-kvm.run" ;;
+                1) driver_filename="NVIDIA-Linux-x86_64-570.133.10-vgpu-kvm-custom.run" ;;
+                2) driver_filename="NVIDIA-Linux-x86_64-550.163.10-vgpu-kvm-patched.run" ;;
+                3) driver_filename="NVIDIA-Linux-x86_64-550.54.10-vgpu-kvm.run" ;;
+                4) driver_filename="NVIDIA-Linux-x86_64-535.161.05-vgpu-kvm.run" ;;
+                5) driver_filename="NVIDIA-Linux-x86_64-535.129.03-vgpu-kvm.run" ;;
+                6) driver_filename="NVIDIA-Linux-x86_64-535.104.06-vgpu-kvm.run" ;;
+                7) driver_filename="NVIDIA-Linux-x86_64-535.54.06-vgpu-kvm.run" ;;
                 *) 
                     echo "Invalid choice. Please enter a valid option."
                     exit 1
@@ -874,6 +874,12 @@ case $STEP in
        
             # Set the driver URL
             case "$driver_version" in
+                18.1)
+                    driver_url="https://mega.nz/file/JjtyXRiC#cTIIvOIxu8vf-RdhaJMGZAwSgYmqcVEKNNnRRJTwDFI"
+                    ;;
+                17.6)
+                    driver_url="https://mega.nz/file/RvsyyBaB#7fe_caaJkBHYC6rgFKtiZdZKkAvp7GNjCSa8ufzkG20"
+                    ;;
                 17.0)
                     driver_url="https://mega.nz/file/JjtyXRiC#cTIIvOIxu8vf-RdhaJMGZAwSgYmqcVEKNNnRRJTwDFI"
                     ;;
