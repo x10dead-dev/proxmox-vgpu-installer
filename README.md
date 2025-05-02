@@ -1,3 +1,6 @@
+
+THIS SCRIPT IS NOT WORKING AND BEING BUILT, PLEASE DON'T CLONE OR FORK THIS REPO
+
 This is a little Bash script that configures a Proxmox 7 or 8 server to use Nvidia vGPU's. 
 
 For further instructions see my blogpost at https://wvthoog.nl/proxmox-7-vgpu-v3/
