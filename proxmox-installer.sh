@@ -128,6 +128,16 @@ map_filename_to_version() {
                 driver_patch="550.54.10.patch"
                 md5="5f5e312cbd5bb64946e2a1328a98c08d"
                 ;;
+            NVIDIA-Linux-x86_64-550.163.10-vgpu-kvm-patched.run)
+                driver_version="17.6"
+                driver_patch="550.163.10.patch"
+                md5="5f5e312cbd5bb64946e2a1328a98c08d"
+                ;;
+            NVIDIA-Linux-x86_64-570.133.10-vgpu-kvm-patched.run)
+                driver_version="18.1"
+                driver_patch="570.133.10.patch"
+                md5="5f5e312cbd5bb64946e2a1328a98c08d"
+                ;;
         esac
         return 0  # Return true
     else
