@@ -9,7 +9,7 @@ STEP="${STEP:-1}"
 URL="${URL:-}"
 FILE="${FILE:-}"
 DRIVER_VERSION="${DRIVER_VERSION:-}"
-SCRIPT_VERSION=1.1
+SCRIPT_VERSION=1.2
 VGPU_DIR=$(pwd)
 VGPU_SUPPORT="${VGPU_SUPPORT:-}"
 DRIVER_VERSION="${DRIVER_VERSION:-}"
@@ -101,7 +101,7 @@ major_version=$(echo "$version" | sed 's/\([0-9]*\).*/\1/')
 # Function to map filename to driver version and patch
 map_filename_to_version() {
     local filename="$1"
-    if [[ "$filename" =~ ^(NVIDIA-Linux-x86_64-535\.54\.06-vgpu-kvm\.run|NVIDIA-Linux-x86_64-535\.104\.06-vgpu-kvm\.run|NVIDIA-Linux-x86_64-535\.129\.03-vgpu-kvm\.run|NVIDIA-Linux-x86_64-535\.161\.05-vgpu-kvm\.run|NVIDIA-Linux-x86_64-550\.54\.10-vgpu-kvm\.run)$ ]]; then
+    if [[ "$filename" =~ ^(NVIDIA-Linux-x86_64-535\.54\.06-vgpu-kvm\.run|NVIDIA-Linux-x86_64-535\.104\.06-vgpu-kvm\.run|NVIDIA-Linux-x86_64-535\.129\.03-vgpu-kvm\.run|NVIDIA-Linux-x86_64-535\.161\.05-vgpu-kvm\.run|NVIDIA-Linux-x86_64-550\.54\.10-vgpu-kvm\.run|NVIDIA-Linux-x86_64-550\.163\.02-vgpu-kvm\.run|NVIDIA-Linux-x86_64-570\.133\.10-vgpu-kvm\.run)$ ]]; then
         case "$filename" in
             NVIDIA-Linux-x86_64-535.54.06-vgpu-kvm.run)
                 driver_version="16.0"
@@ -128,15 +128,15 @@ map_filename_to_version() {
                 driver_patch="550.54.10.patch"
                 md5="5f5e312cbd5bb64946e2a1328a98c08d"
                 ;;
-            NVIDIA-Linux-x86_64-550.163.10-vgpu-kvm-patched.run)
+            NVIDIA-Linux-x86_64-550.163.02-vgpu-kvm.run)
                 driver_version="17.6"
                 driver_patch="550.163.10.patch"
-                md5="5f5e312cbd5bb64946e2a1328a98c08d"
+                md5="093036d83baf879a4bb667b484597789"
                 ;;
-            NVIDIA-Linux-x86_64-570.133.10-vgpu-kvm-patched.run)
+            NVIDIA-Linux-x86_64-570.133.10-vgpu-kvm.run)
                 driver_version="18.1"
                 driver_patch="570.133.10.patch"
-                md5="5f5e312cbd5bb64946e2a1328a98c08d"
+                md5="f435eacdbe3c8002ccad14bd62c9bd2d"
                 ;;
         esac
         return 0  # Return true
@@ -848,8 +848,8 @@ case $STEP in
 
             # Validate the chosen filename against the compatibility map
             case $driver_choice in
-                1) driver_filename="NVIDIA-Linux-x86_64-570.133.10-vgpu-kvm-custom.run" ;;
-                2) driver_filename="NVIDIA-Linux-x86_64-550.163.10-vgpu-kvm-patched.run" ;;
+                1) driver_filename="NVIDIA-Linux-x86_64-570.133.10-vgpu-kvm.run" ;;
+                2) driver_filename="NVIDIA-Linux-x86_64-550.163.02-vgpu-kvm.run" ;;
                 3) driver_filename="NVIDIA-Linux-x86_64-550.54.10-vgpu-kvm.run" ;;
                 4) driver_filename="NVIDIA-Linux-x86_64-535.161.05-vgpu-kvm.run" ;;
                 5) driver_filename="NVIDIA-Linux-x86_64-535.129.03-vgpu-kvm.run" ;;
@@ -875,7 +875,7 @@ case $STEP in
             # Set the driver URL
             case "$driver_version" in
                 18.1)
-                    driver_url="https://mega.nz/file/NAYAGYpL#en-eYfid3GYmHkGVCAUagc6P2rbdw1Y2E9-7hOW19m8"
+                    driver_url="https://mega.nz/file/0YpHTAxJ#_XMpdJ68w3sM72p87kYSiEQXFA5BbFZl_xvF_XZSd4k"
                     ;;
                 17.6)
                     driver_url="https://mega.nz/file/NAYAGYpL#en-eYfid3GYmHkGVCAUagc6P2rbdw1Y2E9-7hOW19m8"
@@ -1062,10 +1062,16 @@ case $STEP in
             # Offer to download vGPU driver versions based on Proxmox version and supported driver
             if [[ "$major_version" == "8" ]]; then
                 echo -e "${YELLOW}[-]${NC} You are running Proxmox version $version"
-                if contains_version "17" && contains_version "16"; then
-                    echo -e "${YELLOW}[-]${NC} Your Nvidia GPU is supported by driver versions 17.0 and 16.x"
+                if contains_version "18" && contains_version "17" && contains_version "16"; then
+                    echo -e "${YELLOW}[-]${NC} Your Nvidia GPU is supported by driver versions 18.x, 17.x and 16.x"
+                elif contains_version "17" && contains_version "16"; then
+                    echo -e "${YELLOW}[-]${NC} Your Nvidia GPU is supported by driver versions 17.x and 16.x"
+                elif contains_version "18"; then
+                    echo -e "${YELLOW}[-]${NC} Your Nvidia GPU is supported by driver version 18.x"
                 elif contains_version "17"; then
-                    echo -e "${YELLOW}[-]${NC} Your Nvidia GPU is supported by driver version 17.0"
+                    echo -e "${YELLOW}[-]${NC} Your Nvidia GPU is supported by driver version 17.x"
+                elif contains_version "16"; then
+                    echo -e "${YELLOW}[-]${NC} Your Nvidia GPU is supported by driver version 16.x"
                 elif contains_version "16"; then
                     echo -e "${YELLOW}[-]${NC} Your Nvidia GPU is supported by driver version 16.x"
                 fi
@@ -1081,11 +1087,13 @@ case $STEP in
             echo ""
             echo "Select vGPU driver version:"
             echo ""
-            echo "1: 17.0 (550.54.10)"
-            echo "2: 16.4 (535.161.05)"
-            echo "3: 16.2 (535.129.03)"
-            echo "4: 16.1 (535.104.06)"
-            echo "5: 16.0 (535.54.06)"
+            echo "1: 18.1 (570.133.10)"
+            echo "2: 17.6 (550.163.10)"
+            echo "3: 17.0 (550.54.10)"
+            echo "4: 16.4 (535.161.05)"
+            echo "5: 16.2 (535.129.03)"
+            echo "6: 16.1 (535.104.06)"
+            echo "7: 16.0 (535.54.06)"
             echo ""
 
             read -p "Enter your choice: " driver_choice
@@ -1094,11 +1102,13 @@ case $STEP in
 
             # Validate the chosen filename against the compatibility map
             case $driver_choice in
-                1) driver_filename="NVIDIA-Linux-x86_64-550.54.10-vgpu-kvm.run" ;;
-                2) driver_filename="NVIDIA-Linux-x86_64-535.161.05-vgpu-kvm.run" ;;
-                3) driver_filename="NVIDIA-Linux-x86_64-535.129.03-vgpu-kvm.run" ;;
-                4) driver_filename="NVIDIA-Linux-x86_64-535.104.06-vgpu-kvm.run" ;;
-                5) driver_filename="NVIDIA-Linux-x86_64-535.54.06-vgpu-kvm.run" ;;
+                1) driver_filename="NVIDIA-Linux-x86_64-570.133.10-vgpu-kvm.run" ;;
+                2) driver_filename="NVIDIA-Linux-x86_64-550.163.02-vgpu-kvm.run" ;;
+                3) driver_filename="NVIDIA-Linux-x86_64-550.54.10-vgpu-kvm.run" ;;
+                4) driver_filename="NVIDIA-Linux-x86_64-535.161.05-vgpu-kvm.run" ;;
+                5) driver_filename="NVIDIA-Linux-x86_64-535.129.03-vgpu-kvm.run" ;;
+                6) driver_filename="NVIDIA-Linux-x86_64-535.104.06-vgpu-kvm.run" ;;
+                7) driver_filename="NVIDIA-Linux-x86_64-535.54.06-vgpu-kvm.run" ;;
                 *) 
                     echo "Invalid choice. Please enter a valid option."
                     exit 1
@@ -1117,6 +1127,12 @@ case $STEP in
             # Set the driver URL if not provided
             if [ -z "$URL" ]; then
                 case "$driver_version" in
+                    18.1)
+                        driver_url="https://mega.nz/file/0YpHTAxJ#_XMpdJ68w3sM72p87kYSiEQXFA5BbFZl_xvF_XZSd4k"
+                        ;;
+                    17.6)
+                        driver_url="https://mega.nz/file/NAYAGYpL#en-eYfid3GYmHkGVCAUagc6P2rbdw1Y2E9-7hOW19m8"
+                        ;;
                     17.0)
                         driver_url="https://mega.nz/file/JjtyXRiC#cTIIvOIxu8vf-RdhaJMGZAwSgYmqcVEKNNnRRJTwDFI"
                         ;;
@@ -1220,7 +1236,15 @@ case $STEP in
         run_command "Enable nvidia-vgpu-mgr.service" "info" "systemctl enable --now nvidia-vgpu-mgr.service"
 
         # Check DRIVER_VERSION against specific driver filenames
-        if [ "$driver_filename" == "NVIDIA-Linux-x86_64-550.54.10-vgpu-kvm.run" ]; then
+        if [ "$driver_filename" == "NVIDIA-Linux-x86_64-570.133.10-vgpu-kvm.run" ]; then
+            echo -e "${GREEN}[+]${NC} In your VM download Nvidia guest driver for version: 570.133.10"
+            echo -e "${YELLOW}[-]${NC} Linux: https://storage.googleapis.com/nvidia-drivers-us-public/GRID/vGPU18.1/NVIDIA-Linux-x86_64-570.133.20-grid.run"
+            echo -e "${YELLOW}[-]${NC} Windows: https://storage.googleapis.com/nvidia-drivers-us-public/GRID/vGPU18.1/572.83_grid_win10_win11_server2022_dch_64bit_international.exe"
+        elif [ "$driver_filename" == "NVIDIA-Linux-x86_64-550.163.02-vgpu-kvm.run" ]; then
+            echo -e "${GREEN}[+]${NC} In your VM download Nvidia guest driver for version: 550.163.02"
+            echo -e "${YELLOW}[-]${NC} Linux: https://storage.googleapis.com/nvidia-drivers-us-public/GRID/vGPU17.6/NVIDIA-Linux-x86_64-550.163.01-grid.run"
+            echo -e "${YELLOW}[-]${NC} Windows: https://storage.googleapis.com/nvidia-drivers-us-public/GRID/vGPU17.6/553.74_grid_win10_win11_server2022_dch_64bit_international.exe"
+        elif [ "$driver_filename" == "NVIDIA-Linux-x86_64-550.54.10-vgpu-kvm.run" ]; then
             echo -e "${GREEN}[+]${NC} In your VM download Nvidia guest driver for version: 550.54.10"
             echo -e "${YELLOW}[-]${NC} Linux: https://storage.googleapis.com/nvidia-drivers-us-public/GRID/vGPU17.0/NVIDIA-Linux-x86_64-550.54.14-grid.run"
             echo -e "${YELLOW}[-]${NC} Windows: https://storage.googleapis.com/nvidia-drivers-us-public/GRID/vGPU17.0/551.61_grid_win10_win11_server2022_dch_64bit_international.exe"
