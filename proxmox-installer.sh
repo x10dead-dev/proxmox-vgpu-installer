@@ -876,24 +876,31 @@ case $STEP in
             case "$driver_version" in
                 18.1)
                     driver_url="https://mega.nz/file/0YpHTAxJ#_XMpdJ68w3sM72p87kYSiEQXFA5BbFZl_xvF_XZSd4k"
+                    driver_custom="https://mega.nz/file/tNgBVTxb#MXSUN5E_yc3lXYhlhDb7LUzYdDpGAbqP1g1388iN55k"
                     ;;
                 17.6)
                     driver_url="https://mega.nz/file/NAYAGYpL#en-eYfid3GYmHkGVCAUagc6P2rbdw1Y2E9-7hOW19m8"
+                    driver_custom="none"
                     ;;
                 17.0)
                     driver_url="https://mega.nz/file/JjtyXRiC#cTIIvOIxu8vf-RdhaJMGZAwSgYmqcVEKNNnRRJTwDFI"
+                    driver_custom="none"
                     ;;
                 16.4)
                     driver_url="https://mega.nz/file/RvsyyBaB#7fe_caaJkBHYC6rgFKtiZdZKkAvp7GNjCSa8ufzkG20"
+                    driver_custom="none"
                     ;;
                 16.2)
                     driver_url="https://mega.nz/file/EyEXTbbY#J9FUQL1Mo4ZpNyDijStEH4bWn3AKwnSAgJEZcxUnOiQ"
+                    driver_custom="none"
                     ;;
                 16.1)
                     driver_url="https://mega.nz/file/wy1WVCaZ#Yq2Pz_UOfydHy8nC_X_nloR4NIFC1iZFHqJN0EiAicU"
+                    driver_custom="none"
                     ;;
                 16.0)
                     driver_url="https://mega.nz/file/xrNCCAaT#UuUjqRap6urvX4KA1m8-wMTCW5ZwuWKUj6zAB4-NPSo"
+                    driver_custom="none"
                     ;;
             esac
 
@@ -909,6 +916,14 @@ case $STEP in
             echo -e "${GREEN}[+]${NC} Downloading vGPU $driver_filename host driver using megadl"
             megadl "$driver_url"
 
+            # Download and install the selected vGPU custom driver
+            if [ "$driver_custom" = "none" ]; then
+                echo "No available custom found for $driver_filename"
+                exit 1
+            fi
+            echo -e "${GREEN}[+]${NC} Downloading vGPU custom $driver_filename host driver using megadl"
+            megadl "$driver_custom"
+            
             # Check if download is successful
             if [ $? -ne 0 ]; then
                 echo "Download failed."
