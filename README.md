@@ -29,11 +29,12 @@ Changes in version 1.2
 - Created database to check for PCI ID's to determine if a GPU is natively supported
 - If multiple GPU's are detected, pass through the rest using UDEV rules
 - Always write config.txt to script directory
-- Use Docker for hosting FastAPI-DLS (licensing)
+- Use Docker for hosting FastAPI-DLS (licensing) or using this docker [fastapi-dls](https://hub.docker.com/r/collinwebdesigns/fastapi-dls) container on any host or capable server
 - Create Powershell (ps1) and Bash (sh) files to retrieve licenses from FastAPI-DLS
 
+## 🚀 Contributing
 All Credit belong to wvthoog for creating the V1.1 script
 
-All Thanks to foxipan at https://alist.homelabproject.cc/foxipan for providing the required drivers/patches/custom
+All Thanks to foxipan at this [repo](https://alist.homelabproject.cc/foxipan) for providing the required drivers/patches/custom
 
-Many thank to everone on vGPU Unlocking Discord for making vGPU easier for everone to get access (https://discord.gg/5rQsSV3Byq) 
+Many thank to everone on [vGPU Unlocking Discord](https://discord.gg/5rQsSV3Byq) for making vGPU easier for everone to get access, also this is the link for [vGPU-Patch](https://gitlab.com/polloloco/vgpu-proxmox)
