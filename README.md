@@ -35,5 +35,7 @@ Changes in version 1.2
 - Create Powershell (ps1) and Bash (sh) files to retrieve licenses from FastAPI-DLS
 
 All Credit belong to wvthoog for creating the V1.1 script
+
 All Thanks to foxipan at https://alist.homelabproject.cc/foxipan for providing the required drivers/patches/custom
+
 Many thank to everone on vGPU Unlocking Discord for making vGPU easier for everone to get access (https://discord.gg/5rQsSV3Byq) 
