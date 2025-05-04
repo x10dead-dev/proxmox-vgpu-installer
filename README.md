@@ -2,6 +2,9 @@
 This is a little Bash script that configures a Proxmox 7 or 8 server to use Nvidia vGPU's. 
 For further instructions see wvthoog's blogpost at https://wvthoog.nl/proxmox-7-vgpu-v3/
 
+## WARNING !!!
+- fastapi-dls is not working correctly with v18.x but working fine on v17.x, please consider this for extended use
+- 17.6 & 18.1 is download only and only for natively support vGPU, lookup on NVIDIA for supported GPU ([v18.x](https://docs.nvidia.com/vgpu/18.0/product-support-matrix/index.html) & [v17.x](https://docs.nvidia.com/vgpu/17.0/product-support-matrix/index.html))
 ## Changes
 Changes in version 1.2
 ### Added driver versions 16
@@ -10,7 +13,6 @@ Changes in version 1.2
 	16.2
 	16.3
 	16.4 / 16.5
-	16.6
 	16.7
 	16.8
 	16.9 !!! USE THIS IF YOU ARE ON PASCAL OR OLDER !!!
