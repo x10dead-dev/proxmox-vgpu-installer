@@ -1017,8 +1017,8 @@ case $STEP in
 
             # Download and install the selected vGPU custom driver
             if [ "$driver_custom" = "none" ]; then
-                echo "No available custom found for $driver_filename"
-                exit 1
+                echo "${YELLOW}[-]${NC}No available custom found for $driver_filename"
+                echo "${YELLOW}[-]${NC}Continue Installing Driver"
             fi
             echo -e "${GREEN}[+]${NC} Downloading vGPU custom $driver_filename host driver using megadl"
             megadl "$driver_custom"
@@ -1339,8 +1339,8 @@ case $STEP in
             megadl "$driver_url"
             
             if [ "$driver_custom" = "none" ]; then
-                echo "No available custom found for $driver_filename"
-                exit 1
+                echo "${YELLOW}[-]${NC}No available custom found for $driver_filename"
+                echo "${YELLOW}[-]${NC}Continue Installing Driver"
             fi
             echo -e "${GREEN}[+]${NC} Downloading vGPU custom $driver_filename host driver using megadl"
             megadl "$driver_custom"
