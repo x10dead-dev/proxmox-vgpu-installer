@@ -1,5 +1,5 @@
 # vGPU Proxmox Script
-This is a little Bash script that configures a Proxmox 7 or 8 server to use Nvidia vGPU's. 
+This is a little Bash script that configures a Proxmox 8 or 9 server to use Nvidia vGPU's. 
 For further instructions see wvthoog's blogpost at https://wvthoog.nl/proxmox-7-vgpu-v3/
 
 ## WARNING !!!
@@ -7,6 +7,14 @@ For further instructions see wvthoog's blogpost at https://wvthoog.nl/proxmox-7-
 - 17.6 & 18.1 is download only and only for natively support vGPU, lookup on NVIDIA for supported GPU ([v18.x](https://docs.nvidia.com/vgpu/18.0/product-support-matrix/index.html) & [v17.x](https://docs.nvidia.com/vgpu/17.0/product-support-matrix/index.html))
 ## Changes
 Changes in version 1.2
+- Added support for Proxmox 9.
+- Removed support for Proxmox 7.
+- Removed kernel pinning as it's no longer necessary.
+- Integrated `pve-nvidia-vgpu-helper` for a more robust setup.
+- Updated the host driver installation method and its service.
+- Updated supported vGPU driver versions to 18.3, 18.4, and 19.0. Check [PVE Wiki](https://pve.proxmox.com/wiki/NVIDIA_vGPU_on_Proxmox_VE#Software_Versions).
+- Removed support for older driver versions (16.x, 17.0).
+- Switched from `megadl` to `wget` for downloading drivers from new URLs.
 ### Added driver versions 16
 	16.0
 	16.1
