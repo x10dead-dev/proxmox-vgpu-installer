@@ -383,6 +383,9 @@ case $STEP in
             # Commands for new installation
             echo -e "${GREEN}[+]${NC} Making changes to APT for Proxmox version: ${RED}$major_version${NC}"
             case $major_version in
+                9)
+                    proxmox_repo="deb http://download.proxmox.com/debian/pve trixie pve-no-subscription"
+                    ;;
                 8)
                     proxmox_repo="deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription"
                     ;;
@@ -398,7 +401,9 @@ case $STEP in
             # Replace repository lines
             replace_repo_lines "deb https://enterprise.proxmox.com/debian/pve bullseye pve-enterprise" "$proxmox_repo"
             replace_repo_lines "deb https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise" "$proxmox_repo"
+            replace_repo_lines "deb https://enterprise.proxmox.com/debian/pve trixie pve-enterprise" "$proxmox_repo"
             replace_repo_lines "deb https://enterprise.proxmox.com/debian/ceph-quincy bookworm enterprise" "deb http://download.proxmox.com/debian/ceph-quincy bookworm no-subscription"
+            replace_repo_lines "deb https://enterprise.proxmox.com/debian/ceph-reef trixie enterprise" "deb http://download.proxmox.com/debian/ceph-reef trixie no-subscription"
 
             # Check if Proxmox repository entry exists in /etc/apt/sources.list
             if ! grep -q "$proxmox_repo" /etc/apt/sources.list; then
@@ -434,8 +439,10 @@ case $STEP in
             # Downgrade kernel and headers for Nvidia drivers to install successfully
             # apt install proxmox-kernel-6.5 proxmox-headers-6.5
             # used to be pve-headers, but that will use latest version (which is currently 6.8)
-            run_command "Installing packages" "info" "apt install -y git build-essential dkms proxmox-kernel-6.5 proxmox-headers-6.5 mdevctl megatools"
-
+            run_command "Installing packages" "info" "apt install -y git build-essential dkms proxmox-kernel-6.5 proxmox-headers-6.5 mdevctl megatools wget pve-nvidia-vgpu-helper"
+            #
+            run_command "Setup pve-nvidia-vgpu-helper" "info" "echo y|pve-nvidia-vgpu-helper setup"
+            #
             # Pinning the kernel
             kernel_version_compare() {
                 ver1=$1
@@ -869,7 +876,7 @@ case $STEP in
             echo -e "${GREEN}[+]${NC} Downloading Nvidia vGPU drivers"
 
             # Offer to download vGPU driver versions based on Proxmox version
-            if [[ "$major_version" == "8" ]]; then
+            if [[ "$major_version" == "8" ]] || [[ "$major_version" == "9" ]]; then
                 echo -e "${GREEN}[+]${NC} You are running Proxmox version $version"
                 echo -e "${GREEN}[+]${NC} Highly recommended that you download driver 18.x, 17.x or 16.x"
             elif [[ "$major_version" == "7" ]]; then
@@ -1174,7 +1181,7 @@ case $STEP in
             }
 
             # Offer to download vGPU driver versions based on Proxmox version and supported driver
-            if [[ "$major_version" == "8" ]]; then
+            if [[ "$major_version" == "8" ]] || [[ "$major_version" == "9" ]]; then
                 echo -e "${YELLOW}[-]${NC} You are running Proxmox version $version"
                 if contains_version "18" && contains_version "17" && contains_version "16"; then
                     echo -e "${YELLOW}[-]${NC} Your Nvidia GPU is supported by driver versions 18.x, 17.x and 16.x"
